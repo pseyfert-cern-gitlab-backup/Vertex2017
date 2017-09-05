@@ -167,7 +167,233 @@ breaklines=true,breakautoindent=true}
 \maketitle
 
 \begin{frame}
-  \frametitle{scope}
+  \frametitle{scope I}
+
+  \begin{columns}
+    \begin{column}{.65\textwidth}
+      \begin{center}
+%\uselengthunit{mm}\printlength{\textwidth}.
+        \includegraphics[width=0.92\textwidth,trim=0 0 0 50,clip]{/home/pseyfert/phd/talks/irtg20120615/LHCb-reoptimized-y.pdf}
+        \hspace{-0.92\textwidth}
+        \resizebox{0.92\textwidth}{!}{
+          \begin{tikzpicture}
+            \useasboundingbox (0,0) rectangle (752pt,476pt);
+          \end{tikzpicture}
+        }
+      \end{center}
+    \end{column}
+    \begin{column}{.35\textwidth}
+      \begin{itemize}
+        \item Fully equipped forward detector at the LHC
+        \item Approaching 400 papers
+        \item exceeding our own expectations:
+          \begin{itemize}
+              \item online calibration and alignment
+              \item exceeding design pile-up
+          \end{itemize}
+      \end{itemize}
+    \end{column}
+    \end{columns}
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{scope II}
+      \includegraphics[width=\textwidth]{./alessiotable.pdf}
+
+      {\footnotesize{\texttt{Eur. Phys. Journal C (2013) 73:2373}}}
+
+      \begin{itemize}
+          \item By 2018 important analyses will still be statistically limited
+          \item Theoretical uncertainty smaller than experimental
+          \item[$\rightarrow$] Significantly more statistics needed
+          \item[$\Rightarrow$] Go to higher luminosity
+      \end{itemize}
+    \end{frame}
+
+
+\begin{frame}
+  \frametitle{removal of hardware trigger I}
+  \begin{columns}
+  \begin{column}{.6\textwidth}
+    \includegraphics[width=\textwidth]{./dijkstra.png}
+  \end{column}
+  \begin{column}{.4\textwidth}
+    \begin{alertblock}{what doesn't work}
+    \begin{itemize}
+        \item increased luminosity
+        \item[$\rightarrow$] events passing hardware trigger
+        \item[$\rightarrow$] saturating bandwidth
+        \item[$\rightarrow$] tighten thresholds
+        \item[$\rightarrow$] loss in efficiency
+        \item[$\Rightarrow$] no increase in statistics for analyses
+        \newline (depending on the decay channel)
+    \end{itemize}
+  \end{alertblock}
+  \end{column}
+  \end{columns}
+  %data pile, dijkstra plot PID plot
+\end{frame}
+
+\begin{frame}
+  \frametitle{removal of hardware trigger II}
+  \includegraphics[width=\textwidth]{./stor.pdf}
+  \begin{itemize}
+      \item backgrounds from real physics events
+      \item cannot distinguish signal from background w/o RICH PID
+      \item[$\Rightarrow$] even selection in software
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{ }
+  \includegraphics[width=.45\textwidth]{./LHCb_Trigger_RunII_May2015.pdf}
+  \hspace{.01\textwidth}
+  $\Rightarrow$
+  \hspace{.01\textwidth}
+  \includegraphics[width=.45\textwidth]{./LHCb_Trigger_RunIII_May2015.pdf}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Luxury problem: MHz signals}
+  \includegraphics[width=.6\textwidth]{./pile.pdf}
+  \only<1>{
+  \begin{itemize}
+    \item Selecting and storing full events could work for rare signal
+    \item When dealing with ``millions'' of good signal events, rejecting background isn't enough to stay within processing bandwidths
+  \end{itemize}
+}
+\only<2>{
+  \begin{exampleblock}{The TURBO approach}
+    \begin{itemize}
+        \item once a decay is reconstructed (mass, decay time, Dalitz plot)
+          \newline no need to access raw data for analysts
+        \item once a decay is reconstructed in the trigger
+          \newline no need to re-reconstruct offline
+
+        \item (unaffordable to study raw data for millions of events anyway)
+    \end{itemize}
+  \end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{store what you need}
+  \includegraphics[width=.8\textwidth]{./turbosp-002.png}
+
+  {\footnotesize{\texttt{10.1016/j.cpc.2016.07.022}}}
+  
+  \begin{block}{per trigger line storage definition}
+  \begin{itemize}
+      \item only decay and nothing else
+      \item decay and selected reconstructed objects
+      \item all \emph{reconstructed} objects (no raw data)
+      \item full raw event
+  \end{itemize}
+  TURBO triggers must be a default for many analyses
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bandwidth division I}
+  \begin{itemize}
+    \item There's always an efficiency vs. event rate tradeoff
+    \item assume: every analysis could max out the full data bandwidth to maximise their \emph{efficiency}
+    \item compromises need to be made
+    \item ideally with little \emph{sensitivity} loss
+  \end{itemize}
+
+  \begin{block}{}
+    \includegraphics[width=\textwidth]{./BW.pdf}
+    \begin{itemize}
+        \item if sum of all channels exceeds total bandwidth \newline$\rightarrow$ assume random dropping of events
+    \end{itemize}
+  \end{block}
+
+
+{\footnotesize{\texttt{LHCb-PUB-2017-006}}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bandwidth division II}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+  \includegraphics[width=\textwidth]{./BW-trend.pdf}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      going from maximal bandwidth to restricted bandwidth
+      \begin{itemize}
+      \item only small efficiency decrease
+      \item ``90\,\% of the data holds 95\,\% of the statistical power''
+      \end{itemize}
+    \end{column}
+    \end{columns}
+  \end{frame}
+
+\begin{frame}
+  \frametitle{``Moore doesn't obey Moore's law''}
+
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+  \includegraphics[width=\textwidth]{./moore.png}
+    \end{column}
+    \begin{column}{.5\textwidth}
+
+  \begin{itemize}
+    \item theoretical computing power of CPUs increases (per second, per Watt, per CHF)
+    \item observed computed trigger decisions does not follow that increase
+  \end{itemize}
+    \end{column}
+    \end{columns}
+    \begin{alertblock}{reasons from a CPU's point of view \only<2>{II}\only<1>{I}/II}
+    \only<1>{
+  \begin{itemize}
+    \item modern vector units process 2, 4, or 8 inputs at a time
+      \newline$\leadsto$ our software often didn't use these
+      \newline$\rightarrow$ 7/8 of the silicon unused!
+  \end{itemize}
+    }
+    \only<2>{
+  \begin{itemize}
+    \item software not parallelised (just start multiple processes on a multicore machine)
+    \newline$\leadsto$ processes compete for memory
+    \newline$\leadsto$ even multiple instances of the same data (detector geometry)
+    \newline$\rightarrow$ CPU waits for data instead of computing
+  \end{itemize}
+    }
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}
+  overview tracking (stages and types)
+\end{frame}
+
+\begin{frame}
+  parametrised kalman
+\end{frame}
+
+\begin{frame}
+  vectorised kalman
+\end{frame}
+
+\begin{frame}
+  soa/aos
+\end{frame}
+
+\begin{frame}
+  ghost prob
+\end{frame}
+
+\begin{frame}
+  threadded brunel
+\end{frame}
+
+\begin{frame}
+  WG production
+\end{frame}
+
+\begin{frame}
+  conclusion
 \end{frame}
 
 \end{document}
