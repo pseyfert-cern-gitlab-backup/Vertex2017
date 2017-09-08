@@ -251,6 +251,18 @@
     \end{itemize}
   \end{exampleblock}
 }
+\only<3>{
+  \begin{alertblock}{The TURBO approach}
+    \begin{itemize}
+        \item once a decay is reconstructed (mass, decay time, Dalitz plot)
+          \newline \textcolor{red}{cannot afford} to store all raw data offline
+        \item once a decay is reconstructed in the trigger
+          \newline \textcolor{red}{cannot afford} to re-reconstruct all data offline
+
+        \item \textcolor{red}{\textbf{Finite budget for offline computing resources}}
+    \end{itemize}
+  \end{alertblock}
+}
 \end{frame}
 
 \begin{frame}
@@ -273,16 +285,16 @@
 \begin{frame}
   \frametitle{Bandwidth division I}
   \begin{itemize}
-    \item There's always an efficiency vs. event rate tradeoff
-    \item assume: every analysis could max out the full data bandwidth to maximise their \emph{efficiency}
-    \item compromises need to be made
-    \item ideally with little \emph{sensitivity} loss
+    \item In a perfect world we could store and process all selected events
+    \item wide Physics program requires compromise
+    \item limit \emph{sensitivity} loss in a fair share
   \end{itemize}
 
   \begin{block}{}
     \includegraphics[width=\textwidth]{./BW.pdf}
     \begin{itemize}
         \item if sum of all channels exceeds total bandwidth \newline$\rightarrow$ assume random dropping of events
+        \item weight to reduce impact of calibration channels\newline (different order of magnitude in branching fraction)
     \end{itemize}
   \end{block}
 
@@ -301,6 +313,7 @@
       \begin{itemize}
       \item only small efficiency decrease
       \item ``90\,\% of the data holds 95\,\% of the statistical power''
+      \item different persistency tested, too:\newline $D^0\to K_S\pi\pi$ as Turbo++\newline$\Rightarrow$ more restricted total rate
       \end{itemize}
     \end{column}
     \end{columns}
@@ -437,6 +450,7 @@
         \item resolution close to reference
         \item potentially use full fit for tracks with large $\sqrt{t_x^2+t_y^2}$
         \item find alternative parametrisations
+        \item[$\Rightarrow$] fast track fit must not deteriorate resolution
     \end{itemize}
   \end{exampleblock}
 }
