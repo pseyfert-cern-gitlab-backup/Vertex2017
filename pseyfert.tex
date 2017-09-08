@@ -157,7 +157,7 @@ breaklines=true,breakautoindent=true}
 \newcommand{\myhref}[2]{\href{#1}{\textcolor{blue}{#2}}}
 
 
-\author[Paul Seyfert]{Paul Seyfert}
+\author[Paul Seyfert]{Paul Seyfert\newline on behalf of the LHCb collaboration}
 \institute[CERN]{CERN}
 \date[\today]{VERTEX 2017}
 \title[LHCb upgrade]{Tracking, Vertexing and data handling strategy for the LHCb upgrade}
@@ -211,6 +211,24 @@ breaklines=true,breakautoindent=true}
     \end{frame}
 
 
+    \begin{frame}
+      \frametitle{Upgrade of the tracking system}
+      \begin{columns}
+        \begin{column}{.7\textwidth}
+          \includegraphics[width=\textwidth]{./LHCb2.pdf}
+        \end{column}
+        \begin{column}{.3\textwidth}
+            \begin{itemize}
+              \item Vertex pixel detector
+                \newline see talk by Edgar Lemos Cid
+              \item silicon strip detector
+                \newline see talk by Marco Petruzzo
+              \item scintilating fiber tracker
+            \end{itemize}
+          \end{column}
+        \end{columns}
+      \end{frame}
+
 \begin{frame}
   \frametitle{removal of hardware trigger I}
   \begin{columns}
@@ -255,7 +273,11 @@ breaklines=true,breakautoindent=true}
 
 \begin{frame}[t]
   \frametitle{Luxury problem: MHz signals}
-  \includegraphics[width=.6\textwidth]{./pile.pdf}
+  \begin{columns}\begin{column}{.6\textwidth}
+  \includegraphics[width=\textwidth]{./pile.pdf}
+  \end{column}\begin{column}{.4\textwidth}
+  \includegraphics[height=\textwidth,angle =-90]{./Dmass.pdf}
+\end{column}\end{columns}
   \only<1>{
   \begin{itemize}
     \item Selecting and storing full events could work for rare signal
@@ -278,7 +300,7 @@ breaklines=true,breakautoindent=true}
 
 \begin{frame}
   \frametitle{store what you need}
-  \includegraphics[width=.8\textwidth]{./turbosp-002.png}
+  \includegraphics[width=\textwidth]{./turbosp.png}
 
   {\footnotesize{\texttt{10.1016/j.cpc.2016.07.022}}}
   
@@ -365,35 +387,155 @@ breaklines=true,breakautoindent=true}
 \end{frame}
 
 \begin{frame}
-  overview tracking (stages and types)
+  \frametitle{tracking sequence}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      \only<1>{\includegraphics[width=\textwidth]{./fast.png}
+    
+      full sequence $\unit{6.0}{ms/evt}$
+      \begin{description}
+        \item[VELO tracking] $\unit{2.0}{ms/evt}$
+        \item[VELO-UT tracking] $\unit{0.5}{ms/evt}$
+        \item[forward tracking] $\unit{2.3}{ms/evt}$
+        \item[PV finding] $\unit{1.1}{ms/evt}$
+      \end{description}
+
+      (present HLT1: $\unit{35}{ms}$)
+    
+    }
+      \only<2>{\includegraphics[width=\textwidth]{./full.png}
+    
+%      $\unit{6.0}{ms/evt}$
+%      \begin{itemize}
+%        \item[VELO tracking] $\unit{2.0}{ms/evt}$
+%        \item[VELO-UT tracking] $\unit{0.5}{ms/evt}$
+%        \item[forward tracking] $\unit{2.3}{ms/evt}$
+%        \item[PV finding] $\unit{1.1}{ms/evt}$
+%      \end{itemize}
+
+      (present HLT2: $\unit{650}{ms}$)
+    }
+    
+  \end{column}
+  \begin{column}{.5\textwidth}
+    \includegraphics[width=.8\textwidth]{./ttypes.pdf}
+    \begin{itemize}
+        \item similar to current software trigger
+          \item single track and two track selections for displaced objects
+            \newline (``easy'' combinatorics, limited reconstruction)
+            \item<2-> reconstruct remaining tracks in the ``full stage''
+              \item<2-> also reconstruct decay products of strange decays outside the VELO
+    \end{itemize}
+  \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}
-  parametrised kalman
+  \frametitle{Kalman filter track fit}
+  \only<1>{
+  \begin{itemize}
+      \item track fit one of the big CPU time consumers
+        \item written for sequential adding of hits
+        \item but different tracks can be fitted independent of each other
+          \newline (thread parallelisable)
+        \item matrix operations are always the same
+          \newline (vectorisable)
+  \end{itemize}
+}
+\only<2>{
+  \begin{alertblock}{grain of salt}
+    \begin{itemize}
+        \item only speeds up the matrix algebra
+        \item material lookup remains
+        \item now requires back-and-forth conversion of memory layout
+        \item[$\Rightarrow$] to be consequent need to adapt underlying event model
+    \end{itemize}
+  \end{alertblock}
+}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+  \includegraphics[width=\textwidth]{./SIMD.pdf.png}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \includegraphics[width=\textwidth]{./kalspeed.pdf}
+    \end{column}
+    \end{columns}
+  {\footnotesize{\texttt{LHCb-TALK-2016-372}}}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{parametrised Kalman fit}
+  \begin{itemize}
+    \item avoid first-principles math for every track
+      \newline $\leadsto$ parametrisations can be equally accurate
+      \newline reduce complicated $B$ field propagation and material lookup to $\mathcal{O}(20)$ parameters
+  \end{itemize}
+  \includegraphics[width=\textwidth]{./param.pdf}
+  \only<2->{
+    \vspace{-.4\textheight}
+  \begin{exampleblock}{work in progress}
+    \begin{itemize}
+        \item resolution close to reference
+        \item potentially use full fit for tracks with large $\sqrt{t_x^2+t_y^2}$
+        \item find alternative parametrisations
+    \end{itemize}
+  \end{exampleblock}
+}
 \end{frame}
 
 \begin{frame}
-  vectorised kalman
+  \frametitle{fake track identification}
+  \begin{itemize}
+      \item fake tracks a big contribution to computing budget in run~I
+      \item identification of fakes w/ neural network after track fit more powerful than track fit $\chi^2$ alone
+      \item<2-> As more and more ML goes into earlier stages of the track reconstruction, there are less fakes to remove after the track fit
+      \item[$\rightarrow$]<2-> looking forward for this to become less important
+  \end{itemize}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      upgrade fake rejection:
+
+  \includegraphics[width=\textwidth]{./GPlong.png}
+\end{column}
+    \begin{column}{.5\textwidth}
+      \begin{exampleblock}{impact on run II}
+        \begin{itemize}
+          \item RICH PID $- \mathcal{O}(20\,\%)$ CPU
+            \item combinatorics $- \mathcal{O}(60\,\%)$ CPU
+            \item trigger $- \mathcal{O}(30\,\%)$ rate
+        \end{itemize}
+      \end{exampleblock}
+\end{column}
+\end{columns}
+
 \end{frame}
 
 \begin{frame}
-  soa/aos
+  \frametitle{multi threaded processing framework}
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+      \includegraphics[width=\textwidth]{./thread.pdf}
+    \end{column}
+    \begin{column}{.55\textwidth}
+      \begin{itemize}
+        \item introduce harder framework constrains
+            \newline (functional programming)
+            \item observe near optimal speedup when increasing number of threads
+            \item observe little memory increase when increasing number of threads
+      \end{itemize}
+    \end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}
-  ghost prob
-\end{frame}
 
 \begin{frame}
-  threadded brunel
-\end{frame}
+  \frametitle{Conclusion}
+  \begin{itemize}
+    \item LHCb physics program relies on software trigger at $\unit{30}{MHz}$
+    \item Fast tracking \emph{without performance loss} crucial for LHCb upgrade
+      \item Needs reconstruction software close to computer hardware to optimally use 
+  \end{itemize}
 
-\begin{frame}
-  WG production
-\end{frame}
-
-\begin{frame}
-  conclusion
 \end{frame}
 
 \end{document}
