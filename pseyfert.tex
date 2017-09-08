@@ -180,6 +180,24 @@
             \end{itemize}
           \end{column}
         \end{columns}
+        \begin{columns}
+        \begin{column}{.3\textwidth}
+          \begin{block}{$\sigma_z$ (vertex)}
+            $<\unit{90}{\micro\meter}$\newline \small{(more than 20 tracks)}
+            $<\unit{50}{\micro\meter}$\newline \small{(more than 50 tracks)}
+          \end{block}
+          \end{column}
+        \begin{column}{.3\textwidth}
+          \begin{block}{$\sigma_t$ (decay)}
+            $<\unit{45}{\femto\second}$
+          \end{block}
+          \end{column}
+        \begin{column}{.3\textwidth}
+          \begin{block}{$\sigma_p/p$}
+            $<0.5\,\%$
+          \end{block}
+          \end{column}
+        \end{columns}
       \end{frame}
 
 \begin{frame}
@@ -286,6 +304,7 @@
   \frametitle{Bandwidth division I}
   \begin{itemize}
     \item In a perfect world we could store and process all selected events
+      \newline$\rightarrow$ we will face offline storage limits
     \item wide Physics program requires compromise
     \item limit \emph{sensitivity} loss in a fair share
   \end{itemize}
@@ -298,7 +317,7 @@
     \end{itemize}
   \end{block}
 
-
+  \vspace{-1em}
   \myhref{https://cds.cern.ch/record/2244313}{LHCb-PUB-2017-006}
 \end{frame}
 
@@ -364,7 +383,7 @@
 
       \only<1>{\includegraphics[width=\textwidth]{./fast.png}
     
-      full sequence $\unit{6.0}{ms/evt}$
+      fast sequence $\unit{6.0}{ms/evt}$ @ \unit{30}{MHz}
       \begin{description}
         \item[VELO tracking] $\unit{2.0}{ms/evt}$
         \item[VELO-UT tracking] $\unit{0.5}{ms/evt}$
@@ -385,7 +404,10 @@
 %        \item[PV finding] $\unit{1.1}{ms/evt}$
 %      \end{itemize}
 
-      (present HLT2: $\unit{650}{ms}$)
+      %fast sequence $\unit{6.0}{ms/evt}$ @ $\unit{30}{MHz}$
+      full sequence aim $\sim 20\times$ slower\newline at $1/30$ rate (\unit{1}{MHz})
+      \newline Kalman fit large contributor
+      \newline (present HLT2: $\unit{650}{ms}$)
     }
     
   \end{column}
@@ -442,8 +464,13 @@
       \newline $\leadsto$ parametrisations can be equally accurate
       \newline reduce complicated $B$ field propagation and material lookup to $\mathcal{O}(20)$ parameters
   \end{itemize}
-  \includegraphics[width=\textwidth]{./param.pdf}
-  \only<2->{
+  \only<1>{\begin{block}{example parametrised extrapolation through the magnet}\includegraphics[width=.6\textwidth]{./parametrisation.pdf}
+
+  \myhref{https://cds.cern.ch/record/2255840}{LHCb-TALK-2017-047}
+\end{block}
+}
+  \only<2->{\includegraphics[width=\textwidth]{./param.pdf}}
+  \only<3->{
     \vspace{-.4\textheight}
   \begin{exampleblock}{work in progress}
     \begin{itemize}
@@ -509,8 +536,14 @@
   \frametitle{Conclusion}
   \begin{itemize}
     \item LHCb physics program relies on software trigger at $\unit{30}{MHz}$
+    \item Need to face tight constraints from offline storage and processing
+      \newline as well as online processing power
+      \begin{itemize}
+        \item[$\rightarrow$] reconstruction right out of the trigger
+        \item[$\rightarrow$] ``per analysis'' storage 
+      \end{itemize}
     \item Fast tracking \emph{without performance loss} crucial for LHCb upgrade
-      \item Needs reconstruction software close to computer hardware to optimally use 
+      \item Needs reconstruction software close to computer hardware to optimally use it
   \end{itemize}
 
 \end{frame}
