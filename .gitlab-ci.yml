@@ -1,7 +1,7 @@
 image: gitlab-registry.cern.ch/pseyfert/texmachine
 
 before_script:
-  - echo "deb http://deb.debian.org/debian stable main contrib non-free" >> /etc/apt-sources.list
+  - echo "deb http://deb.debian.org/debian stable main contrib non-free" >> /etc/apt/sources.list
   - apt-get update
   - apt-get -y upgrade
   - apt-get install -y ttf-mscorefonts-installer
