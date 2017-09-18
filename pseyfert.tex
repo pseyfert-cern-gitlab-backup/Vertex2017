@@ -68,7 +68,7 @@
 \newsavebox{\unilogo} \newsavebox{\pilogo} \newsavebox{\lhcblogo}
 \IfFileExists{../cern-logo-gray.eps}{\sbox{\unilogo}{\includegraphics[height=1.2cm]{../cern-logo-gray.eps}} }{\sbox{\unilogo}{\includegraphics[height=1.2cm]{cern-logo-gray.eps}}}
 \IfFileExists{../cern-logo.eps}{     \sbox{\pilogo}{\includegraphics[height=0.75cm]{../cern-logo.eps}}      }{\sbox{\pilogo}{\includegraphics[height=0.75cm]{cern-logo.eps}}     }
-\sbox{\lhcblogo}{\includegraphics[height=0.75cm]{../lhcb-logo.eps}}
+\IfFileExists{../lhcb-logo.eps}{\sbox{\lhcblogo}{\includegraphics[height=0.75cm]{../lhcb-logo.eps}}}{\sbox{\lhcblogo}{\includegraphics[height=0.75cm]{lhcb-logo.eps}}}
 
 \setbeamertemplate{footline}
 {
