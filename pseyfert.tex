@@ -64,9 +64,10 @@
 
 %\loadgraphics{logo-pi-bunt3,lhcb-logo,unisiegel-gray}
 
+% https://tex.stackexchange.com/a/98205
 \newsavebox{\unilogo} \newsavebox{\pilogo} \newsavebox{\lhcblogo}
-\sbox{\unilogo}{\includegraphics[height=1.2cm]{../cern-logo-gray.eps}}
-\sbox{\pilogo}{\includegraphics[height=0.75cm]{../cern-logo.eps}}
+\IfFileExists{../cern-logo-gray.eps}{\sbox{\unilogo}{\includegraphics[height=1.2cm]{../cern-logo-gray.eps}} }{\sbox{\unilogo}{\includegraphics[height=1.2cm]{cern-logo-gray.eps}}}
+\IfFileExists{../cern-logo.eps}{     \sbox{\pilogo}{\includegraphics[height=0.75cm]{../cern-logo.eps}}      }{\sbox{\pilogo}{\includegraphics[height=0.75cm]{cern-logo.eps}}     }
 \sbox{\lhcblogo}{\includegraphics[height=0.75cm]{../lhcb-logo.eps}}
 
 \setbeamertemplate{footline}
@@ -118,7 +119,7 @@
 
 \author[Paul Seyfert]{Paul Seyfert\newline on behalf of the LHCb collaboration}
 \institute[CERN]{CERN}
-\date[\today]{VERTEX 2017}
+\date[15th September 2017]{VERTEX 2017}
 \title[LHCb upgrade]{Tracking, Vertexing and data handling strategy for the LHCb upgrade}
 
 
@@ -160,6 +161,8 @@
           \item Theoretical uncertainty smaller than experimental
           \item[$\rightarrow$] Significantly more statistics needed
           \item[$\Rightarrow$] Go to higher luminosity
+            \newline ($\mathcal{L}=2\times10^{33}\mathrm{cm}^{-2}\mathrm{s}^{-1} \Rightarrow \nu\sim 7.6$)
+            \newline \myhref{https://cds.cern.ch/record/1670985?ln=en}{LHCb-PUB-2014-027}
       \end{itemize}
     \end{frame}
 
@@ -233,13 +236,33 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[t]
   \frametitle{ }
   \includegraphics[width=.45\textwidth]{./LHCb_Trigger_RunII_May2015.pdf}
   \hspace{.01\textwidth}
   $\Rightarrow$
   \hspace{.01\textwidth}
   \includegraphics[width=.45\textwidth]{./LHCb_Trigger_RunIII_May2015.pdf}
+
+  \vspace{-.9\textheight}
+  \only<2>{
+  {
+    \begin{columns}
+      \begin{column}{.5\textwidth}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \begin{alertblock}{40 Tbit/s hardware readout}\end{alertblock}
+
+      \vspace{.4\textheight}
+      \begin{exampleblock}{relaxed latency}
+        Calibration takes $\mathcal{O}$(minutes)
+
+        Events stay buffered for $\mathcal{O}$(days)
+      \end{exampleblock}
+    \end{column}
+    \end{columns}
+  }
+}
 \end{frame}
 
 \begin{frame}[t]
@@ -384,12 +407,14 @@
       \only<1>{\includegraphics[width=\textwidth]{./fast.png}
     
       fast sequence $\unit{6.0}{ms/evt}$ @ \unit{30}{MHz}
-      \begin{description}
-        \item[VELO tracking] $\unit{2.0}{ms/evt}$
-        \item[VELO-UT tracking] $\unit{0.5}{ms/evt}$
-        \item[forward tracking] $\unit{2.3}{ms/evt}$
-        \item[PV finding] $\unit{1.1}{ms/evt}$
-      \end{description}
+      {\small{
+        \begin{tabular}{ll}
+          VELO tracking    & $\unit{2.0}{ms/evt}$  \\
+          VELO-UT tracking & $\unit{0.5}{ms/evt}$  \\
+          forward tracking & $\unit{2.3}{ms/evt}$  \\
+          PV finding       & $\unit{1.1}{ms/evt}$  \\
+        \end{tabular}
+      }}
 
       (present HLT1: $\unit{35}{ms}$)
     
@@ -405,7 +430,9 @@
 %      \end{itemize}
 
       %fast sequence $\unit{6.0}{ms/evt}$ @ $\unit{30}{MHz}$
-      full sequence aim $\sim 20\times$ slower\newline at $1/30$ rate (\unit{1}{MHz})
+      full sequence aim
+      {\small{\begin{tabular}{l}
+        $\sim 20\times$ slower\\ $1/30$ rate (\unit{1}{MHz})\end{tabular}}}
       \newline Kalman fit large contributor
       \newline (present HLT2: $\unit{650}{ms}$)
     }
@@ -559,7 +586,7 @@
   \end{center}
 \end{frame}
 
-    \beamertemplateshadingbackground{White}{White}
+    \beamertemplateshadingbackground{white!10!white}{White}
 
 \begin{frame}
   \frametitle{these slides online}
@@ -567,5 +594,57 @@
 
   \myhref{https://gitlab.cern.ch/pseyfert/Vertex2017}{https://gitlab.cern.ch/pseyfert/Vertex2017}
 \end{frame}
+
+\begin{frame}
+  \frametitle{parametrisations I}
+  \begin{columns}\begin{column}{.5\textwidth}
+      \includegraphics[width=\textwidth]{./paravelo.pdf}
+  \end{column}\begin{column}{.5\textwidth}
+      \includegraphics[width=\textwidth]{./paratstat.pdf}
+  \end{column}\end{columns}
+  \myhref{https://cds.cern.ch/record/2255840}{LHCb-TALK-2017-047}
+\end{frame}\begin{frame}
+  \frametitle{parametrisations II}
+  \begin{columns}\begin{column}{.7\textwidth}
+      \includegraphics[width=\textwidth]{./deltatx.pdf}
+  \end{column}\end{columns}
+  \myhref{https://cds.cern.ch/record/2255840}{LHCb-TALK-2017-047}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Vertex resolution}
+  \includegraphics[width=\textwidth]{./vertexresolution.pdf}
+
+      \myhref{https://cds.cern.ch/record/2244312}{LHCb-PUB-2017-005}
+\end{frame}
+
+    \begin{frame}
+      \frametitle{Upgrade of the tracking system}
+      \begin{columns}
+        \begin{column}{.6\textwidth}
+          \includegraphics[width=\textwidth]{./LHCb2.pdf}
+        \end{column}
+        \begin{column}{.4\textwidth}
+            \begin{itemize}
+              \item Vertex pixel detector
+                \newline see talk by Edgar Lemos Cid
+              \item silicon strip detector
+                \newline see talk by Marco Petruzzo
+              \item scintilating fiber tracker
+            \end{itemize}
+          \end{column}
+        \end{columns}
+        \begin{columns}
+        \begin{column}{.8\textwidth}
+          \begin{block}{$\sigma_t$ (decay)}
+            {\textcolor{white}{
+            $<\unit{45}{\femto\second}$
+            \newline $\left(\mathcal{D}\sim \exp(-\underbrace{\Delta m^2}_{1/\unit{56}{\femto\second}}\sigma_t^2/2)\right)$
+            \newline for time dependent $B_s$ analyses
+          }}
+          \end{block}
+          \end{column}
+        \end{columns}
+      \end{frame}
 
 \end{document}

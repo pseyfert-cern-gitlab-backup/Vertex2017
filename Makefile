@@ -12,11 +12,8 @@ quick:
 clean:
 	rm -rf pseyfert.aux pseyfert.log pseyfert.nav pseyfert.out pseyfert.snm pseyfert.toc
 
-# from https://stackoverflow.com/a/29308524
 publish:
-	git branch -D Vertex2017 || true
-	cd ${TOPLEVEL} ; git subtree split --prefix=2017-09-15-Vertex -b Vertex2017
-	git push VERTEX2017 Vertex2017:Vertex2017 -f
+	./publish.sh
 
 printviews:
 	pdfnup --nup '2x2' pseyfert.pdf
